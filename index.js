@@ -96,7 +96,7 @@ app.post("/api/create", async (req, res) => {
 });
 
 app.get("/", (req, res) => {
-  res.status(200).send("Redis & RabbitMQ is listening!!!...");
+  res.status(200).send("Redis & RabbitMQ is listening...");
 });
 
 server.listen(3001, () => console.log("🚀 Server running on 3001"));
