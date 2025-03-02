@@ -1,0 +1,35 @@
+name: Deploy to EC2
+
+on:
+  push:
+    branches:
+      - master  # Runs only when you push to main branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup SSH and Deploy
+        run: |
+          echo "${{ secrets.EC2_SSH_PRIVATE_KEY }}" > deploy_key
+          chmod 600 deploy_key
+
+          ssh -o StrictHostKeyChecking=no -i deploy_key ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
+            cd /home/ubuntu/your-repo-name
+
+            # Pull latest code
+            git reset --hard
+            git pull origin main
+
+            # Install dependencies
+            npm install
+
+            # Restart your backend service (assuming you're using PM2)
+            pm2 restart all || pm2 start npm --name "backend" -- run start
+
+            exit
+          EOF
