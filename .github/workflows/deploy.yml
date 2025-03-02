@@ -19,7 +19,7 @@ jobs:
           chmod 600 deploy_key
 
           ssh -o StrictHostKeyChecking=no -i deploy_key ubuntu@${{ secrets.EC2_HOST }} << 'EOF'
-            cd /home/ubuntu/your-repo-name
+            cd /home/ubuntu/redis-rabbitMQ
 
             # Pull latest code
             git reset --hard
